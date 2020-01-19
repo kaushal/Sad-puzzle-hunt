@@ -150,7 +150,14 @@ def print_board(board):
     mx = len(max((sub[0] for sub in board),key=len))
 
     for row in board:
-        print(" ".join(["{:<{mx}}            ".format(ele,mx=mx) for ele in row]))
+        s = ""
+        for column in row:
+            if column == "B":
+                print '[{0: >15}] '.format("---------------"),
+            else:
+                print '[{0: >15}] '.format(column),
+        print ""
+        print ""
 
 # hard code the puzzle input and tilt up a solution. our algoirthm might be bad.
 def main():
