@@ -103,7 +103,6 @@ def make_move(board, move):
     position = int(position)
     traunch = 0
     first_non_empty_pos = -1
-    import ipdb; ipdb.set_trace()
 
     if direction == 'U':
         traunch = 0 if board[0][position] == '' else 1
@@ -115,9 +114,57 @@ def make_move(board, move):
                 board[i][position] = ''
                 break
         up_counter = 2
-        for i in range(first_non_empty_pos + 1, len(board) - 1):
+        for i in range(first_non_empty_pos + 1, len(board) - 2):
             board[up_counter][position] = board[i][position]
+            board[i][position] = ''
             up_counter += 1
+
+    elif direction == 'D':
+        traunch = 11 if board[10][position] == '' else 10
+        for i in reversed(range(2, len(board) - 2)):
+            current = board[i][position]
+            if board[i][position] != '':
+                first_non_empty_pos = i
+                board[traunch][position] = current
+                board[i][position] = ''
+                break
+        down_counter = 9
+        for i in reversed(range(2, first_non_empty_pos)):
+            board[down_counter][position] = board[i][position]
+            board[i][position] = ''
+            down_counter -= 1
+
+    elif direction == 'L':
+        traunch = 0 if board[position][0] == '' else 1
+        for i in range(2, len(board) - 2):
+            current = board[position][i]
+            if board[position][i] != '':
+                first_non_empty_pos = i
+                board[position][traunch] = current
+                board[position][i] = ''
+                break
+        up_counter = 2
+        for i in range(first_non_empty_pos + 1, len(board) - 2):
+            board[position][up_counter] = board[position][i]
+            board[position][i] = ''
+            up_counter += 1
+
+    elif direction == 'R':
+        traunch = 11 if board[position][10] == '' else 10
+        for i in reversed(range(2, len(board) - 2)):
+            current = board[position][i]
+            if board[position][i] != '':
+                first_non_empty_pos = i
+                board[position][traunch] = current
+                board[position][traunch] = ''
+                break
+        down_counter = 9
+        for i in reversed(range(2, first_non_empty_pos)):
+            board[down_counter][position] = board[position][i]
+            board[position][i] = ''
+            down_counter -= 1
+
+
 
 
 
@@ -158,8 +205,9 @@ def main():
     input_moves = [ '#', 'A', 'T', 'O', 'A', 'U', 'Y', 'M', '#', 'S', 'O', 'P', 'G', 'R', 'U', 'O', 'N', 'M', 'N', 'B', 'C', 'K', 'W', 'G', 'F', 'E', 'N', 'S', 'B', 'C', 'P', 'R', 'A', 'F', 'U', 'C', 'O', '#', 'I', '#', 'O', '#', 'A', 'S', 'N', 'G', 'E', 'N', '#', 'N', 'B', 'S', 'N', 'O', 'M', 'O', '#', 'Y', 'I', '#', 'A', 'A', 'D', '#' ]
 
     board = initialize()
-    print parse_possible_moves(board)
-    print_board(make_move(board, '6-U'))
+    print parse_possible_moves(board, 'A')
+    import ipdb; ipdb.set_trace()
+    print_board(make_move(board, '6-L'))
     '''solution = get_tiltin(input_moves, board)
     if not solution:
         print "Faild to get tiltin', our algorithm is bad"
