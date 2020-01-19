@@ -44,7 +44,65 @@ def parse_possible_moves(board):
 
 
 
-if __name__ == '__main__':
-    board = initialize()
-    print parse_possible_moves(board)
+# schmoovin' to another board state
+# eg:
+#   parse_possible_moves = {'A': ['6-U'], 'C': ['7-U'], 'E': ['2-U'], 'N': ['8-U'], 'P': ['5-U'], 'S': ['9-U']}
+#   move = ['6-U']
+def make_move(board, move):
+    tokens = move.split('-')
+    n = int(tokens[0])
+    direction = tokens[1]
 
+    candidate_board = copy.deepcopy(board)
+    if direction == 'U' or direction == 'D':
+
+    elif direction == 'L' or direction == 'R':
+
+    else:
+        sys.exit(42)
+
+    return candidate_board
+
+
+# That's it. LET'S GET TILTIN'!!
+def get_tiltin(input_moves, board):
+    for i in input_moves:
+        # get moves are possible for the current board state
+        moves_by_character = parse_possible_moves(board)
+        if not moves_by_character[i]:
+            # board has no moves for the next in a bad state, so consider this tiltin' bit a failure
+            return None
+
+        # get candidate moves that specifically allow tiltin' input character `i',
+        # then calculate the ramining input moves by chopping off the first entry.
+        candidate_moves = moves_by_character[i]
+        remaining_input_moves = input_moves[1:]
+
+        for m in candidate_moves:
+            # make schmooves and see if it leads to a solution. if not, try the next candidate.
+            candidate_board = make_move(board, m)
+            solution = get_tiltin(remaining_input_moves, candidate_board)
+            if solution:
+                # dope
+                return solution
+
+        # the provided input moves and board state do not lead to a valid solution
+        return None
+
+
+# hard code the puzzle input and tilt up a solution. our algoirthm might be bad.
+def main():
+    input_moves = [ '#', 'A', 'T', 'O', 'A', 'U', 'Y', 'M', '#', 'S', 'O', 'P', 'G', 'R', 'U', 'O', 'N', 'M', 'N', 'B', 'C', 'K', 'W', 'G', 'F', 'E', 'N', 'S', 'B', 'C', 'P', 'R', 'A', 'F', 'U', 'C', 'O', '#', 'I', '#', 'O', '#', 'A', 'S', 'N', 'G', 'E', 'N', '#', 'N', 'B', 'S', 'N', 'O', 'M', 'O', '#', 'Y', 'I', '#', 'A', 'A', 'D', '#' ]
+
+    board = initialize()
+    solution = get_tiltin(input_moves, board)
+    if not solution:
+        print "Faild to get tiltin', our algorithm is bad"
+        sys.exit(1)
+
+    print "Here is the solution, if it means anything to you: ", solution
+    sys.exit(0)
+
+
+if __name__ == '__main__':
+    sys.exit(main()has no moves for the next
