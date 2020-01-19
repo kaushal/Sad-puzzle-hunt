@@ -119,9 +119,14 @@ def make_move(board, move):
             board[up_counter][position] = board[i][position]
             up_counter += 1
 
-
-
     return board
+
+
+def dope_print(board):
+    for rows in board:
+        for c in rows:
+            print "[%s]" % c
+
 
 # That's it. LET'S GET TILTIN'!!
 def get_tiltin(input_moves, board):
@@ -165,7 +170,8 @@ def main():
         print "Faild to get tiltin', our algorithm is bad"
         sys.exit(1)
 
-    print "Here is the solution, if it means anything to you: ", solution
+    print "Here is the solution, if it means anything to you: "
+    dope_print(solution)
     sys.exit(0)
 '''
 
