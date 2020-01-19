@@ -5,14 +5,14 @@ def initialize():
     board = [
         ['B', 'B', '', '', '', '', '', '', '', '', 'B', 'B'],
         ['B', 'B', '', '', '', '', '', '', '', '', 'B', 'B'],
-        ['', '', 'ML-EU-WR', 'UL-CD-NR', 'OA', 'PU', 'AU', 'UR-CU-NL', 'UD-CR-NU', 'SU-SD', '', ''],
-        ['', '', 'FL', 'AU', 'BU', '#A', 'OA', 'AD', 'KR', 'WD-ER-MU', '', ''],
-        ['', '', 'GU', 'OA', 'UD-CR-NU', 'ND-UU-CL', '#A', 'ML-EU-WR', '#A', 'GR', '', ''],
-        ['', '', 'YL', 'AL', 'UD-CR-NU', 'SU-SD', 'HU-HD-IL-IR', '#A', 'UR-CU-NL', 'UR-CU-NL', '', ''],
-        ['', '', 'PL', '#A', 'RL', 'BR', 'SL-SR', 'UR-CU-NL', 'DL', 'RR', '', ''],
-        ['', '', '#A', 'FD', 'HU-HD-IL-IR', 'OA', 'ND-UU-CL', 'AR', 'BR', 'OA', '', ''],
-        ['', '', 'GU', 'WD-ER-MU', 'TD', 'OA', 'UL-CU-WR', '#A', 'MD-ER-WU', '#A', '', ''],
-        ['', '', 'SU-SD', 'OA', '#A', 'ND-UU-CL', 'YD', 'MD-ER-WU', 'AD', 'ND-UU-CL', '', ''],
+        ['', '', 'ML-EU-WR', 'UL-CD-NR', 'OU-OD-OL-OR', 'PU', 'AU', 'UR-CU-NL', 'UD-CR-NU', 'SU-SD', '', ''],
+        ['', '', 'FL', 'AU', 'BU', '#U-#D-#L-#R', 'OU-OD-OL-OR', 'AD', 'KR', 'WD-ER-MU', '', ''],
+        ['', '', 'GU', 'OU-OD-OL-OR', 'UD-CR-NU', 'ND-UU-CL', '#U-#D-#L-#R', 'ML-EU-WR', '#U-#D-#L-#R', 'GR', '', ''],
+        ['', '', 'YL', 'AL', 'UD-CR-NU', 'SU-SD', 'HU-HD-IL-IR', '#U-#D-#L-#R', 'UR-CU-NL', 'UR-CU-NL', '', ''],
+        ['', '', 'PL', '#U-#D-#L-#R', 'RL', 'BR', 'SL-SR', 'UR-CU-NL', 'DL', 'RR', '', ''],
+        ['', '', '#U-#D-#L-#R', 'FD', 'HU-HD-IL-IR', 'OU-OD-OL-OR', 'ND-UU-CL', 'AR', 'BR', 'OU-OD-OL-OR', '', ''],
+        ['', '', 'GU', 'WD-ER-MU', 'TD', 'OU-OD-OL-OR', 'UL-CU-WR', '#U-#D-#L-#R', 'MD-ER-WU', '#U-#D-#L-#R', '', ''],
+        ['', '', 'SU-SD', 'OU-OD-OL-OR', '#U-#D-#L-#R', 'ND-UU-CL', 'YD', 'MD-ER-WU', 'AD', 'ND-UU-CL', '', ''],
         ['B', 'B', '', '', '', '', '', '', '', '', 'B', 'B'],
         ['B', 'B', '', '', '', '', '', '', '', '', 'B', 'B'],
     ]
@@ -21,7 +21,7 @@ def initialize():
 def is_possible(direction, letter):
     options = letter.split('-')
     for option in options:
-        if option[1] == direction or option[1] == 'A':
+        if option[1] == direction:
             return (option[0], True)
     return ('', False)
 
@@ -163,9 +163,9 @@ def make_move(board, move):
                 break
         down_counter = 9
         for i in reversed(range(2, first_non_empty_pos)):
-            board[down_counter][position] = board[position][i]
+            board[position][down_counter] = board[position][i]
             board[position][i] = ''
-            if board[down_counter][position] != '':
+            if board[position][down_counter] != '':
                 down_counter -= 1
     return board
 
@@ -180,20 +180,20 @@ def get_tiltin(input_moves, board):
     # a tiltin' time is only successful if we can make every input move
     # and eventually reach a solution.
     for i in input_moves:
-        #print "Trying to move letter %s on board" % i
-        #print_board(board)
+        print "Trying to move letter %s on board" % i
+        print_board(board)
         remaining_moves = input_moves[1:]
 
         # try every candidate move for this input character
         possible_moves = parse_possible_moves(board, i)
         if i not in possible_moves:
-            #print "No possible moves for %s" % i
-            #print_board(board)
+            print "No possible moves for %s" % i
+            print_board(board)
             return None
 
         print "Possible moves (input left %d): %s " % (len(input_moves), possible_moves[i])
         for m in possible_moves[i]:
-            #print "Trying move: ", m
+            print "Making move: ", m
             # make schmooves and see if it leads to a solution. if not, try the next candidate.
             candidate_board = copy.deepcopy(board)
             make_move(candidate_board, m)
@@ -219,15 +219,15 @@ def print_board(board):
 
 # hard code the puzzle input and tilt up a solution. our algoirthm might be bad.
 def main():
-    #input_moves = [ '#', 'A', 'T', 'O', 'A', 'U', 'Y', 'M', '#', 'S', 'O', 'P', 'G', 'R', 'U', 'O', 'N', 'M', 'N', 'B', 'C', 'K', 'W', 'G', 'F', 'E', 'N', 'S', 'B', 'C', 'P', 'R', 'A', 'F', 'U', 'C', 'O', '#', 'I', '#', 'O', '#', 'A', 'S', 'N', 'G', 'E', 'N', '#', 'N', 'B', 'S', 'N', 'O', 'M', 'O', '#', 'Y', 'I', '#', 'A', 'A', 'D', '#' ]
-    input_moves = [ '#', 'A', 'T', 'O', 'A', 'U', 'Y', 'M', '#', 'S', 'O', 'P', 'G', 'R', 'U', 'O', 'N', 'M', 'N', 'B', 'C', 'K', 'W', 'G', 'F', 'E', 'N', 'S', 'B', 'C', 'P', 'R', 'A', 'F', 'U', 'C']
+    input_moves = [ '#', 'A', 'T', 'O', 'A', 'U', 'Y', 'M', '#', 'S', 'O', 'P', 'G', 'R', 'U', 'O', 'N', 'M', 'N', 'B', 'C', 'K', 'W', 'G', 'F', 'E', 'N', 'S', 'B', 'C', 'P', 'R', 'A', 'F', 'U', 'C', 'O', '#', 'I', '#', 'O', '#', 'A', 'S', 'N', 'G', 'E', 'N', '#', 'N', 'B', 'S', 'N', 'O', 'M', 'O', '#', 'Y', 'I', '#', 'A', 'A', 'D', '#' ]
+    #input_moves = [ '#', 'A', 'T', 'O', 'A', 'U', 'Y', 'M', '#', 'S' ]#, 'O', 'P', 'G', 'R', 'U', 'O', 'N', 'M', 'N', 'B', 'C', 'K', 'W' , 'G', 'F', 'E', 'N', 'S', 'B', 'C', 'P', 'R', 'A', 'F', 'U', 'C']
 
     board = initialize()
     #print parse_possible_moves(board, '#')
     #print_board(make_move(board, '6-U'))
     solution = get_tiltin(input_moves, board)
     if not solution:
-        print "Faild to get tiltin', our algorithm is bad"
+        print "Failed to get tiltin', our algorithm is bad"
         sys.exit(1)
 
     print "Here is the solution, if it means anything to you: "
