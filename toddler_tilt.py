@@ -3,7 +3,7 @@ def initialize():
         ['B', 'B', '', '', '', '', '', '', '', '', 'B', 'B'],
         ['B', 'B', '', '', '', '', '', '', '', '', 'B', 'B'],
         ['', '', 'ML-EU-WR', 'UL-CD-NR', 'OA', 'PU', 'AU', 'UR-CU-NL', 'UD-CR-NU', 'SU-SD', '', ''],
-        ['', '', 'FL', 'AU', 'BU', '#', 'OA', 'AD', 'KR', 'WD-ER-MU', '', ''],
+        ['', '', 'FL', 'AU', 'BU', '#A', 'OA', 'AD', 'KR', 'WD-ER-MU', '', ''],
         ['', '', 'GU', 'OA', 'UD-CR-NU', 'ND-UU-CL', '#A', 'ML-EU-WR', '#A', 'GR', '', ''],
         ['', '', 'YL', 'AL', 'UD-CR-NU', 'SU-SD', 'HU-HD-IL-IR', '#', 'UR-CU-NL', 'UR-CU-NL', '', ''],
         ['', '', 'PL', '#A', 'RL', 'BR', 'SL-SR', 'UR-CU-NL', 'DL', 'RR', '', ''],
@@ -96,20 +96,29 @@ def parse_possible_moves(board):
 #   parse_possible_moves = {'A': ['6-U'], 'C': ['7-U'], 'E': ['2-U'], 'N': ['8-U'], 'P': ['5-U'], 'S': ['9-U']}
 #   move = ['6-U']
 def make_move(board, move):
-    tokens = move.split('-')
-    n = int(tokens[0])
-    direction = tokens[1]
+    position, direction = move.split('-')
+    position = int(position)
+    traunch = 0
+    first_non_empty_pos = -1
+    import ipdb; ipdb.set_trace()
 
-    candidate_board = copy.deepcopy(board)
-    if direction == 'U' or direction == 'D':
+    if direction == 'U':
+        traunch = 0 if board[0][position] == '' else 1
+        for i in range(2, len(board) - 2):
+            current = board[i][position]
+            if board[i][position] != '':
+                first_non_empty_pos = i
+                board[traunch][position] = current
+                board[i][position] = ''
+                break
+        up_counter = 2
+        for i in range(first_non_empty_pos + 1, len(board) - 1):
+            board[up_counter][position] = board[i][position]
+            up_counter += 1
 
-    elif direction == 'L' or direction == 'R':
 
-    else:
-        sys.exit(42)
 
-    return candidate_board
-
+    return board
 
 # That's it. LET'S GET TILTIN'!!
 def get_tiltin(input_moves, board):
@@ -136,20 +145,27 @@ def get_tiltin(input_moves, board):
         # the provided input moves and board state do not lead to a valid solution
         return None
 
+def print_board(board):
+    mx = len(max((sub[0] for sub in board),key=len))
+
+    for row in board:
+        print(" ".join(["{:<{mx}}            ".format(ele,mx=mx) for ele in row]))
 
 # hard code the puzzle input and tilt up a solution. our algoirthm might be bad.
 def main():
     input_moves = [ '#', 'A', 'T', 'O', 'A', 'U', 'Y', 'M', '#', 'S', 'O', 'P', 'G', 'R', 'U', 'O', 'N', 'M', 'N', 'B', 'C', 'K', 'W', 'G', 'F', 'E', 'N', 'S', 'B', 'C', 'P', 'R', 'A', 'F', 'U', 'C', 'O', '#', 'I', '#', 'O', '#', 'A', 'S', 'N', 'G', 'E', 'N', '#', 'N', 'B', 'S', 'N', 'O', 'M', 'O', '#', 'Y', 'I', '#', 'A', 'A', 'D', '#' ]
 
     board = initialize()
-    solution = get_tiltin(input_moves, board)
+    print parse_possible_moves(board)
+    print_board(make_move(board, '6-U'))
+    '''solution = get_tiltin(input_moves, board)
     if not solution:
         print "Faild to get tiltin', our algorithm is bad"
         sys.exit(1)
 
     print "Here is the solution, if it means anything to you: ", solution
     sys.exit(0)
-
+'''
 
 if __name__ == '__main__':
-    sys.exit(main()has no moves for the next
+    main()
