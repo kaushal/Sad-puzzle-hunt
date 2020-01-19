@@ -1,3 +1,6 @@
+import sys
+import copy
+
 def initialize():
     board = [
         ['B', 'B', '', '', '', '', '', '', '', '', 'B', 'B'],
@@ -30,7 +33,7 @@ def update_moves(moves, letter, i, direction):
         moves[letter] = [move_string]
     return moves
 
-def parse_possible_moves(board):
+def parse_possible_moves(board, target):
     moves = {}
 
     #Checking all the ups
@@ -42,7 +45,7 @@ def parse_possible_moves(board):
             print current, j, i
             if board[1][i] == '' and not clue_found and current != '':
                 letter, valid = is_possible('U', current)
-                if valid:
+                if valid and letter == target:
                     moves = update_moves(moves, letter, i, 'U')
                     '''if letter in moves.keys():
                         moves[letter].append(str(i) + '-U')
@@ -58,7 +61,7 @@ def parse_possible_moves(board):
             if board[10][i] == '' and not clue_found and current != '':
                 print current
                 letter, valid = is_possible('D', current)
-                if valid:
+                if valid and letter == target:
                     moves = update_moves(moves, letter, i, 'D')
                 clue_found = True
 
@@ -71,7 +74,7 @@ def parse_possible_moves(board):
             print current, j, i
             if board[1][j] == '' and not clue_found and current != '':
                 letter, valid = is_possible('L', current)
-                if valid:
+                if valid and letter == target:
                     moves = update_moves(moves, letter, i, 'L')
                 clue_found = True
 
@@ -83,7 +86,7 @@ def parse_possible_moves(board):
             if board[10][j] == '' and not clue_found and current != '':
                 print current
                 letter, valid = is_possible('R', current)
-                if valid:
+                if valid and letter == target:
                     moves = update_moves(moves, letter, i, 'R')
                 clue_found = True
 
@@ -122,22 +125,21 @@ def make_move(board, move):
 
 # That's it. LET'S GET TILTIN'!!
 def get_tiltin(input_moves, board):
+    # all boards are valid when there are no moves to make. pretty sure.
+    if len(input_moves) == 0:
+        return board
+
+    # a tiltin' time is only successful if we can make every input move
+    # and eventually reach a solution.
     for i in input_moves:
-        # get moves are possible for the current board state
-        moves_by_character = parse_possible_moves(board)
-        if not moves_by_character[i]:
-            # board has no moves for the next in a bad state, so consider this tiltin' bit a failure
-            return None
+        remaining_moves = input_moves[1:]
 
-        # get candidate moves that specifically allow tiltin' input character `i',
-        # then calculate the ramining input moves by chopping off the first entry.
-        candidate_moves = moves_by_character[i]
-        remaining_input_moves = input_moves[1:]
-
-        for m in candidate_moves:
+        # try every candidate move for this input character
+        for m in parse_possible_moves(board, i):
             # make schmooves and see if it leads to a solution. if not, try the next candidate.
-            candidate_board = make_move(board, m)
-            solution = get_tiltin(remaining_input_moves, candidate_board)
+            candidate_board = copy.deepcopy(board)
+            make_move(candidate_board, m)
+            solution = get_tiltin(remaining_moves, candidate_board)
             if solution:
                 # dope
                 return solution
@@ -168,4 +170,4 @@ def main():
 '''
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
