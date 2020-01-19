@@ -117,7 +117,8 @@ def make_move(board, move):
         for i in range(first_non_empty_pos + 1, len(board) - 2):
             board[up_counter][position] = board[i][position]
             board[i][position] = ''
-            up_counter += 1
+            if board[up_counter][position] != '':
+                up_counter += 1
 
     elif direction == 'D':
         traunch = 11 if board[11][position] == '' else 10
@@ -132,7 +133,8 @@ def make_move(board, move):
         for i in reversed(range(2, first_non_empty_pos)):
             board[down_counter][position] = board[i][position]
             board[i][position] = ''
-            down_counter -= 1
+            if board[down_counter][position] != '':
+                down_counter -= 1
 
     elif direction == 'L':
         traunch = 0 if board[position][0] == '' else 1
@@ -147,7 +149,8 @@ def make_move(board, move):
         for i in range(first_non_empty_pos + 1, len(board) - 2):
             board[position][up_counter] = board[position][i]
             board[position][i] = ''
-            up_counter += 1
+            if board[position][up_counter] != '':
+                up_counter += 1
 
     elif direction == 'R':
         traunch = 11 if board[position][11] == '' else 10
@@ -162,7 +165,8 @@ def make_move(board, move):
         for i in reversed(range(2, first_non_empty_pos)):
             board[down_counter][position] = board[position][i]
             board[position][i] = ''
-            down_counter -= 1
+            if board[down_counter][position] != '':
+                down_counter -= 1
     return board
 
 
