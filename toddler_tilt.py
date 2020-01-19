@@ -163,12 +163,8 @@ def make_move(board, move):
             board[down_counter][position] = board[position][i]
             board[position][i] = ''
             down_counter -= 1
-
-
-
-
-
     return board
+
 
 # That's it. LET'S GET TILTIN'!!
 def get_tiltin(input_moves, board):
@@ -206,14 +202,14 @@ def main():
 
     board = initialize()
     print parse_possible_moves(board, 'A')
-    import ipdb; ipdb.set_trace()
-    print_board(make_move(board, '6-L'))
+    print_board(make_move(board, '6-U'))
     '''solution = get_tiltin(input_moves, board)
     if not solution:
         print "Faild to get tiltin', our algorithm is bad"
         sys.exit(1)
 
-    print "Here is the solution, if it means anything to you: ", solution
+    print "Here is the solution, if it means anything to you: "
+    print_print(solution)
     sys.exit(0)
 '''
 
