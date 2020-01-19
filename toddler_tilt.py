@@ -103,7 +103,7 @@ def make_move(board, move):
     position = int(position)
     traunch = 0
     first_non_empty_pos = -1
-    import ipdb; ipdb.set_trace()
+    #import ipdb; ipdb.set_trace()
 
     if direction == 'U':
         traunch = 0 if board[0][position] == '' else 1
@@ -120,12 +120,6 @@ def make_move(board, move):
             up_counter += 1
 
     return board
-
-
-def dope_print(board):
-    for rows in board:
-        for c in rows:
-            print "[%s]" % c
 
 
 # That's it. LET'S GET TILTIN'!!
@@ -163,7 +157,7 @@ def main():
     input_moves = [ '#', 'A', 'T', 'O', 'A', 'U', 'Y', 'M', '#', 'S', 'O', 'P', 'G', 'R', 'U', 'O', 'N', 'M', 'N', 'B', 'C', 'K', 'W', 'G', 'F', 'E', 'N', 'S', 'B', 'C', 'P', 'R', 'A', 'F', 'U', 'C', 'O', '#', 'I', '#', 'O', '#', 'A', 'S', 'N', 'G', 'E', 'N', '#', 'N', 'B', 'S', 'N', 'O', 'M', 'O', '#', 'Y', 'I', '#', 'A', 'A', 'D', '#' ]
 
     board = initialize()
-    print parse_possible_moves(board)
+    print parse_possible_moves(board, 'A')
     print_board(make_move(board, '6-U'))
     '''solution = get_tiltin(input_moves, board)
     if not solution:
@@ -171,7 +165,7 @@ def main():
         sys.exit(1)
 
     print "Here is the solution, if it means anything to you: "
-    dope_print(solution)
+    print_print(solution)
     sys.exit(0)
 '''
 
